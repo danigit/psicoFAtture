@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Psico Fatture</title>
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+        <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+            crossorigin="anonymous"></script>
+        <script src="app/jquery.mobile-1.4.5.min.js"></script>
+        <script src="app/angular.min.js"></script>
+        <script src="app/app.js"></script>
+    </head>
+
+    <body ng-app='myApp'>
+        <div data-role="page" ng-controller='myCtrl'>
+            <ul data-role="listview">
+                <li ng-repeat='car in cars'><a href="{{car}}.html">{{car}}</a>
+
+                </li>
+            </ul>
+        </div>
+    </body>
+
+</html>
