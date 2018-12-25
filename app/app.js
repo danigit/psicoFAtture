@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    let app = angular.module('main', ['ngRoute']);
+    let app = angular.module('main', ['ngRoute', 'ngMaterial']);
 
     app.config(function ($routeProvider) {
         $routeProvider.when('/', {
@@ -20,6 +20,7 @@
         $scope.login = function () {
             let username = $scope.username;
             let password = $scope.password;
+            $location.path('/login');
         }
     });
 
