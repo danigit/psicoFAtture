@@ -1,7 +1,22 @@
-<div ng-controller="homeController" ng-cloak>
-    <md-content>
-        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-            <md-button class="md-warn">Login</md-button>
-        </section>
-    </md-content>
+<div layout="column" layout-align="center center" class="full-height-vh login-column">
+    <div layout="row" class="login-container">
+        <div flex="80">
+            <img src="../img/login-immage.jpg" class="image-position">
+        </div>
+        <div flex="20">
+            <div layout="column" layout-align="center center" class="full-height">
+                <h1 class="philosopher-font white-color">LOGIN</h1>
+                <md-input-container>
+                    <label>Email</label>
+                    <input ng-model="user.email">
+                </md-input-container>
+                <br>
+                <md-input-container>
+                    <label>Password</label>
+                    <input ng-model="user.password">
+                </md-input-container>
+                <md-button class="white-color">Login</md-button>
+            </div>
+        </div>
+    </div>
 </div>

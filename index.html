@@ -4,17 +4,26 @@
         <meta charset="UTF-8">
         <title>Psico Fatture</title>
 
-        <link rel="stylesheet" href="css/angular-material.min.css">
+        <!--LOCAL CSS-->
+        <link rel="stylesheet" href="css/default/angular-material.min.css">
+        <link rel="stylesheet" href="css/custom.css">
+        <link rel="stylesheet" href="css/home.css">
+
+        <!--CDN'S CSS-->
+        <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
     </head>
 
     <body>
         <div ng-view id="mainContent"></div>
 
+        <!--DEFAULT JS-->
         <script src="app/default/angular.min.js"></script>
         <script src="app/default/angular-route.min.js"></script>
         <script src="app/default/angular-animate.min.js"></script>
         <script src="app/default/angular-aria.min.js"></script>
         <script src="app/default/angular-material.min.js"></script>
+
+        <!--MY JS-->
         <script src="app/app.js"></script>
     </body>
 

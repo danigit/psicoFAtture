@@ -7,9 +7,6 @@
         $routeProvider.when('/', {
             templateUrl: './components/home.html',
             controller: 'homeController'
-        }).when('/login', {
-            templateUrl: './components/login.html',
-            controller: 'loginController'
         })
         .otherwise({
             template: '404'

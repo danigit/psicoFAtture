@@ -1,0 +1,18 @@
+.login-column{
+    background-color: #00BBB3;
+}
+
+.login-container{
+    margin: 10% 5% 10% 5%;
+    border-radius: 30px;
+    /*border: 1px solid black;*/
+    box-shadow: 0 0 20px 15px #00ffff80;;
+
+}
+
+.image-position{
+    width: 100%;
+    height: 100%;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}

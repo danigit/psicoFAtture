@@ -1,0 +1,40 @@
+/**
+DIMENSIONS
+ */
+.full-height-vh{
+    height: 100vh;
+}
+
+.full-height{
+    height: 100%;
+}
+
+.margin-lr-20{
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+/**
+FONTS
+ */
+.philosopher-font{
+    font-family: Philosopher;
+}
+
+/**
+COLORS
+ */
+.white-color{
+    color: #ffffff;
+}
+
+/**
+FRAMEWORK
+ */
+md-input-container label{
+    color: #ffffff!important;
+}
+
+.md-input{
+    border-color: #ffffff!important;
+}
