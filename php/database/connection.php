@@ -65,6 +65,31 @@ class Connection{
     }
 
     /**
+     * Function that controls the user email and user password passed as parameter are in database
+     * @param $email - user email
+     * @param $password - user password
+     * @return db_errors|mysqli_stmt - the user id on success or an error on fail
+     */
+    function login($email, $password){
+        $this->query = 'SELECT id, password FROM users WHERE  email = ?';
+
+        $statement = $this->execute_selecting($this->query, 's', $email);
+
+        if ($statement instanceof db_errors)
+            return $statement;
+        else if ($statement == false)
+            return new db_errors(db_errors::$ERROR_ON_LOGIN);
+
+        $statement->bind_result($res_id, $res_pass);
+        $fetch = $statement->fetch();
+
+        if ($fetch && password_verify($password, $res_pass))
+            return $res_id;
+
+        return new db_errors(db_errors::$ERROR_ON_LOGIN);
+    }
+
+    /**
      * Function that uses the execute statement to execute a query with the prepare statement
      * @param $query - the query to be executed
      * @param $bind_string - the string containing the types of the parameters of the query
@@ -93,5 +118,33 @@ class Connection{
 
         $statement->close();
         return $result;
+    }
+
+    /**
+     * Function that uses the execute statement to execute a query with the prepare statement
+     * @param $query - the query to be executed
+     * @param $bind_string - the string containing the types of the parameters of the query
+     * @param mixed ...$params - the parameters of the query
+     * @return mysqli_stmt|db_errors
+     */
+    function execute_selecting($query, $bind_string, ...$params){
+        $statement = $this->connection->prepare($query);
+        $bind_names[] = $bind_string;
+
+        for ($i = 0; $i < count($params); $i++){
+            $bind_name = 'bind' . $i;
+            $$bind_name = $params[$i];
+            $bind_names[] = &$$bind_name;
+        }
+
+        call_user_func_array(array($statement, 'bind_param'), $bind_names);
+
+        try{
+            $statement->execute();
+        }catch (Exception $e){
+            return new db_errors(db_errors::$ERROR_ON_EXECUTE);
+        }
+
+        return $statement;
     }
 }

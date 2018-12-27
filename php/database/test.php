@@ -28,10 +28,12 @@ class Test{
                 break;
             case 'register': var_dump($this->conn->register('ds.acconto@gmail.com', 'dani'));
                 break;
+            case 'login': var_dump($this->conn->login('ds.acconto@gmail.com', 'dani'));
+                break;
             default: var_dump('Funzione non esistente');
         }
     }
 }
 
 $test = new Test();
-$test->test_function('register');
+$test->test_function('login');
