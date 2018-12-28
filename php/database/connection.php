@@ -7,6 +7,7 @@
  */
 
 require_once 'config.php';
+require_once 'db_errors.php';
 
 class Connection{
 

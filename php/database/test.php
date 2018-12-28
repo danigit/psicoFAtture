@@ -28,7 +28,7 @@ class Test{
                 break;
             case 'register': var_dump($this->conn->register('ds.acconto@gmail.com', 'dani'));
                 break;
-            case 'login': var_dump($this->conn->login('ds.acconto@gmail.com', 'dani'));
+            case 'login': var_dump($this->conn->login('ds.acconto@gmail.com', 'dan'));
                 break;
             default: var_dump('Funzione non esistente');
         }

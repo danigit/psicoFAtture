@@ -42,6 +42,7 @@ class db_errors{
             case 2: return 'ERROR_ON_EMAIL_DUPLICATE_ENTRY';
             case 3: return 'ERROR_ON_REGISTER_USER';
             case 4: return 'ERROR_ON_LOGIN';
+            default: return 'UNKNOWN_ERROR';
         }
     }
 }
