@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    let app = angular.module('main', ['ngRoute', 'ngMaterial']);
+    let app = angular.module('main', ['ngRoute', 'ngMaterial', 'ngMessages']);
 
     app.config(function ($routeProvider) {
         $routeProvider

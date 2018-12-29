@@ -4,19 +4,29 @@
             <img src="../img/login-image.jpg" class="image-position">
         </div>
         <div flex="20">
-            <div layout="column" layout-align="center center" class="full-height">
-                <h1 class="philosopher-font white-color">LOGIN</h1>
-                <md-input-container>
-                    <label>Email</label>
-                    <input ng-model="email" title="">
-                </md-input-container>
-                <br>
-                <md-input-container>
-                    <label>Password</label>
-                    <input type="password" ng-model="password" title="">
-                </md-input-container>
-                <md-button ng-click="login()" class="white-color">Login</md-button>
-            </div>
+            <form name="loginForm" class="full-height">
+                <div layout="column" layout-align="center center" class="full-height">
+                    <h1 class="philosopher-font white-color">LOGIN</h1>
+                    <md-input-container>
+                        <label>Email</label>
+                        <input required type="email" name="emailInput" ng-model="email" ng-pattern="/^.+@.+\..+$/" title="">
+                        <div ng-messages="loginForm.emailInput.$error" role="alert">
+                            <div ng-message="required">Inserire una email</div>
+                            <div ng-message="pattern">Inserire una email valida</div>
+                        </div>
+                    </md-input-container>
+                    <br>
+                    <md-input-container>
+                        <label>Password</label>
+                        <input required type="password" name="passwordInput" ng-model="password" minlength="4" maxlength="8" title="">
+                        <div ng-messages="loginForm.passwordInput.$error">
+                            <div ng-message="required">Inserire una password</div>
+                            <div ng-message-exp="['minlength', 'maxlength']">La password deve avere tra 4 e 8 caratteri</div>
+                        </div>
+                    </md-input-container>
+                    <md-button ng-click="login()" class="white-color">Login</md-button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
