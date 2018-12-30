@@ -1,11 +1,43 @@
-<div id="loginForm">
-    <div class="input">
-        <input type="text" ng-model="username" placeholder="Username">
+<div ng-controller="HomeController">
+    <div ng-controller="HomeNavController">
+        <md-content class="md-padding">
+            <md-nav-bar md-no-ink-bar="disableInkBar"
+                        md-selected-nav-item="currentNavItem"
+                        nav-bar-aria-label="navigation links">
+                <md-nav-item md-nav-click="generateInvoice()" name="generateInvoice">
+                    Genera Fattura
+                </md-nav-item>
+                <md-nav-item md-nav-click="" name="insertPatient">
+                    Inserisci paziente
+                </md-nav-item>
+                <md-nav-item md-nav-click="" name="updatePatient">
+                    Aggiorna paziente
+                </md-nav-item>
+                <md-nav-item md-nav-click="" name="deletePatient">
+                    Elimina paziente
+                </md-nav-item>
+            </md-nav-bar>
+        </md-content>
     </div>
-    <div class="input">
-        <input type="password" ng-model="password" placeholder="Password">
-    </div>
-    <div class="input">
-        <button ng-click="login()">Login</button>
+
+    <div ng-controller="LastInvoicesController">
+        <div layout="column" class="margin-lr-20">
+            <div layout="row" layout-align="center center" class="margin-top-10 margin-bottom-3">
+                <md-subheader class="md-primary"><h2 class="color-pink">ULTIME 10 FATTURE EFFETTUATE</h2></md-subheader>
+            </div>
+            <table>
+                <tr>
+                    <th class="text-left font-large padding-10">Numero</th>
+                    <th class="text-left font-large padding-10">Descrizione</th>
+                    <th class="text-left font-large padding-10">Data</th>
+                </tr>
+                <tr ng-repeat="invoice in lastInvoices">
+                    <td class="padding-10">{{invoice.number}}</td>
+                    <td class="padding-10">{{invoice.description}}</td>
+                    <td class="padding-10">{{invoice.date}}</td>
+                    <td><md-button class="md-accent">RICHIAMA</md-button></td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>

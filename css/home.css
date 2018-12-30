@@ -1,12 +1,12 @@
 .login-column{
-    background-color: #00BBB3;
+    background-image: url("../img/login-background.jpg");
 }
 
 .login-container{
     margin: 10% 5% 10% 5%;
     border-radius: 30px;
     /*border: 1px solid black;*/
-    box-shadow: 0 0 20px 15px #00ffff80;;
+    box-shadow: 0 0 100px 5px #d3d3d361;;
 
 }
 

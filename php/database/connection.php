@@ -91,6 +91,27 @@ class Connection{
     }
 
     /**
+     * Function that retrieve the last 10 invoices
+     * @return array|db_errors|mysqli_result
+     */
+    function get_last_invoices(){
+        $this->query = 'SELECT * FROM invoice LIMIT 10';
+
+        $this->result = $this->connection->query($this->query);
+
+        if ($this->result == false)
+            return new db_errors(db_errors::$ERROR_ON_LOGIN);
+
+        $return_result = array();
+
+        while ($row = mysqli_fetch_assoc($this->result)){
+            $return_result[] = array('number' => $row['id'], 'description' => $row['description'], 'date' => $row['date']);
+        }
+
+        return $return_result;
+    }
+
+    /**
      * Function that uses the execute statement to execute a query with the prepare statement
      * @param $query - the query to be executed
      * @param $bind_string - the string containing the types of the parameters of the query

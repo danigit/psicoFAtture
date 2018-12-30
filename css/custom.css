@@ -21,6 +21,14 @@ FONTS
     font-family: Philosopher, serif;
 }
 
+.text-left{
+    text-align: left;
+}
+
+.font-large{
+    font-size: large;
+}
+
 /**
 COLORS
  */
@@ -37,4 +45,43 @@ md-input-container label{
 
 .md-input{
     border-color: #ffffff!important;
+}
+
+/**
+MARGINS
+ */
+
+.margin-top-10{
+    margin-top: 10%;
+}
+
+.margin-bottom-3{
+    margin-bottom: 3%;
+}
+
+/**
+PADDING
+ */
+
+.padding-10{
+    padding: 10px;
+}
+
+.padding-l-10{
+    padding-left: 10px;
+}
+
+/**
+BORDER
+ */
+.border-1{
+    border: 1px solid #000000;
+}
+
+/**
+COLOR
+ */
+
+.color-pink{
+    color: #FF387E;
 }

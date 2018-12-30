@@ -30,10 +30,12 @@ class Test{
                 break;
             case 'login': var_dump($this->conn->login('ds.acconto@gmail.com', 'dan'));
                 break;
+            case 'lastInvoices': var_dump($this->conn->get_last_invoices());
+                break;
             default: var_dump('Funzione non esistente');
         }
     }
 }
 
 $test = new Test();
-$test->test_function('login');
+$test->test_function('lastInvoices');
