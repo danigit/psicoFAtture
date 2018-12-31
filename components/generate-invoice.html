@@ -20,7 +20,7 @@
                 <span class="margin-r-20-px">{{patient.surname}}</span>
                 <span class="margin-r-20-px">{{patient.street}}</span>
                 <span class="margin-r-20-px">{{patient.fiscal_code}}</span>
-                <span><md-button class="md-accent">GENERA FATTURA</md-button></span>
+                <span><md-button class="md-accent" ng-click="generateInvoiceButton(patient.number)">GENERA FATTURA</md-button></span>
                 <md-divider></md-divider>
             </md-list-item>
         </md-list>
