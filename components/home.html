@@ -28,12 +28,14 @@
             <table>
                 <tr>
                     <th class="text-left font-large padding-10">Numero</th>
-                    <th class="text-left font-large padding-10">Descrizione</th>
+                    <th class="text-left font-large padding-10">Nome</th>
+                    <th class="text-left font-large padding-10">Cognome</th>
                     <th class="text-left font-large padding-10">Data</th>
                 </tr>
                 <tr ng-repeat="invoice in lastInvoices">
                     <td class="padding-10">{{invoice.number}}</td>
-                    <td class="padding-10">{{invoice.description}}</td>
+                    <td class="padding-10">{{invoice.name}}</td>
+                    <td class="padding-10">{{invoice.surname}}</td>
                     <td class="padding-10">{{invoice.date}}</td>
                     <td><md-button class="md-accent">RICHIAMA</md-button></td>
                 </tr>

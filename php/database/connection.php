@@ -95,7 +95,8 @@ class Connection{
      * @return array|db_errors|mysqli_result
      */
     function get_last_invoices(){
-        $this->query = 'SELECT * FROM invoice LIMIT 10';
+        $this->query = 'SELECT invoice.id, name, surname, date FROM invoice JOIN patient p 
+                        ON invoice.patient = p.id ORDER BY date DESC ';
 
         $this->result = $this->connection->query($this->query);
 
@@ -105,7 +106,7 @@ class Connection{
         $return_result = array();
 
         while ($row = mysqli_fetch_assoc($this->result)){
-            $return_result[] = array('number' => $row['id'], 'description' => $row['description'], 'date' => $row['date']);
+            $return_result[] = array('number' => $row['id'], 'name' => $row['name'], 'surname' => $row['surname'], 'date' => $row['date']);
         }
 
         return $return_result;
