@@ -32,10 +32,12 @@ class Test{
                 break;
             case 'lastInvoices': var_dump($this->conn->get_last_invoices());
                 break;
+            case 'allPatients': var_dump($this->conn->get_patients());
+                break;
             default: var_dump('Funzione non esistente');
         }
     }
 }
 
 $test = new Test();
-$test->test_function('lastInvoices');
+$test->test_function('allPatients');
