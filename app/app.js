@@ -68,10 +68,45 @@
      * Function that handle the navbar
      * @type {string[]}
      */
-    HomeNavController.$inject = ['$scope', '$location'];
-    function HomeNavController($scope, $location){
+    HomeNavController.$inject = ['$scope', '$location', '$mdDialog'];
+    function HomeNavController($scope, $location, $mdDialog){
         $scope.generateInvoice = function () {
             $location.path('/generate-invoice')
+        };
+
+        $scope.insertPatient = function (event) {
+            $mdDialog.show({
+                // locals: {passedPatient: $scope.patients[id - 1]},
+                templateUrl: '../components/insert-patient-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: event,
+                clickOutsideToClose: true,
+                fullscreen: $scope.customFullscreen,
+                controller: ['$scope', 'PatientsService', function ($scope, PatientsService) {
+                    //TODO I should create a service that handle the common actions on all dialogs
+                    $scope.patient = {
+                        name: '',
+                        surname: '',
+                        street: '',
+                        fiscal_code: '',
+                        p_iva: '',
+                    };
+
+                    $scope.insertPatient = function(form){
+                        if (form)
+                            PatientsService.insertPatient($scope.patient)
+                    };
+
+                    $scope.hide = function(){
+                        $mdDialog.hide();
+                    };
+                }]
+            })
+            .then(function (answer) {
+                //TODO Show success
+            }, function () {
+                //TODO Show error
+            })
         }
     }
 
@@ -130,6 +165,7 @@
                 clickOutsideToClose: true,
                 fullscreen: $scope.customFullscreen,
                 controller: ['$scope', 'passedPatient', 'PatientsService', function ($scope, passedPatient, PatientsService) {
+                    console.log(passedPatient);
                     $scope.patient = Object.create(passedPatient);
                     $scope.patient.city  = $scope.patient.street.split('-')[1].trim() + ' - ' + $scope.patient.street.split('-')[2];
                     $scope.patient.street = $scope.patient.street.split('-')[0];
@@ -204,6 +240,14 @@
     PatientsService.$inject = ['$http'];
     function PatientsService($http) {
         let service = this;
+
+        service.insertPatient = function(data){
+            return $http({
+                method: 'POST',
+                url   : 'http://localhost/psicoFatture/php/ajax/insert_patient.php',
+                params: {patient: data},
+            });
+        };
 
         service.generateInvoicePdf = function(patient){
             let totalCost = 60.00;

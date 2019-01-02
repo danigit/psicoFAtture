@@ -1,0 +1,69 @@
+<md-dialog aria-label="Inserimento cliente" class="full-width">
+    <form id="insertPatientForm" name="insertPatientForm">
+
+        <md-toolbar class="background-pink">
+            <div class="md-toolbar-tools">
+                <h2>Inserimento cliente</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="hide()">
+                    <img src="../img/close-icon.jpg" aria-label="Close dialog"/>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div layout="column" layout-align="center">
+                    <div layout="column">
+                        <h3>Compilare i campi richiesti</h3>
+                    </div>
+                    <md-input-container>
+                        <label>Nome</label>
+                        <input required type="text" name="insertPatientName" ng-model="patient.name" title="">
+                        <div ng-messages="insertPatientForm.insertPatientName.$error" role="alert">
+                            <div ng-message="required">Inserire un nome</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Cognome</label>
+                        <input required type="text" name="insertPatientSurname" ng-model="patient.surname" title="">
+                        <div ng-messages="insertPatientForm.insertPatientSurname.$error" role="alert">
+                            <div ng-message="required">Inserire il cognome</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Indirizzo</label>
+                        <input required type="text" name="insertPatientStreet" ng-model="patient.street" title="">
+                        <div ng-messages="insertPatientForm.insertPatientStreet.$error" role="alert">
+                            <div ng-message="required">Inserire l'indirizzo</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Codice Fiscale</label>
+                        <input required type="text" name="insertPatientFiscalCode" ng-model="patient.fiscal_code" title="">
+                        <div ng-messages="insertPatientForm.insertPatientFiscalCode.$error" role="alert">
+                            <div ng-message="required">Inserire il codice fiscale</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Partita iva</label>
+                        <input required type="text" name="insertPatientIVA" ng-model="patient.p_iva" title="">
+                        <div ng-messages="insertPatientForm.insertPatientIVA.$error" role="alert">
+                            <div ng-message="required">Inserire l'importo della fattura</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-accent" ng-click="hide()">
+                ANULLA
+            </md-button>
+            <md-button class="md-accent" ng-click="insertPatient(insertPatientForm.$valid)">
+                INSERISCI CLIENTE
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

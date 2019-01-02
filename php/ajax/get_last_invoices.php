@@ -9,6 +9,8 @@
 require_once 'communication.php';
 require_once 'helper.php';
 
+header('Access-Control-Allow-Origin: http://localhost:3000');
+
 class get_last_invoices extends communication {
     private $result;
 

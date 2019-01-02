@@ -12,6 +12,7 @@ class db_errors{
     public static $ERROR_ON_EMAIL_DUPLICATE_ENTRY                     = 2;
     public static $ERROR_ON_REGISTER_USER                     = 3;
     public static $ERROR_ON_LOGIN                     = 4;
+    public static $ERROR_ON_INSERTING_PATIENT                     = 5;
 
     private $error;
 
@@ -42,6 +43,7 @@ class db_errors{
             case 2: return 'ERROR_ON_EMAIL_DUPLICATE_ENTRY';
             case 3: return 'ERROR_ON_REGISTER_USER';
             case 4: return 'ERROR_ON_LOGIN';
+            case 5: return 'ERROR_ON_INSERTING_PATIENT';
             default: return 'UNKNOWN_ERROR';
         }
     }

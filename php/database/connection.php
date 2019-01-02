@@ -134,6 +134,19 @@ class Connection{
         return $return_result;
     }
 
+    function insert_patient($patient){
+        $query = 'INSERT INTO patient (name, surname, street, fiscal_code, p_iva) VALUES (?, ?, ?, ?, ?)';
+        $result = $this->execute_inserting($query, "sssss", $patient['name'], $patient['surname'], $patient['street'], $patient['fiscal_code'], $patient['p_iva']);
+
+        if ($result instanceof db_errors) {
+            return $result;
+        } else if ($result) {
+            return $this->connection->insert_id;
+        }
+
+        return new db_errors(db_errors::$ERROR_ON_INSERTING_PATIENT);
+    }
+
     /**
      * Function that uses the execute statement to execute a query with the prepare statement
      * @param $query - the query to be executed
