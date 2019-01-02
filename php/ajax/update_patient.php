@@ -11,7 +11,7 @@ require_once 'helper.php';
 header('Access-Control-Allow-Origin: http://localhost:3000');
 
 
-class insert_patient extends communication {
+class update_patient extends communication {
     private $patient, $result;
 
     protected function input_elaboration(){
@@ -22,10 +22,10 @@ class insert_patient extends communication {
 
     protected function retrieve_data(){
         $connection = $this->get_connection();
-        $this->result = $connection->insert_patient(json_decode($this->patient, true));
+        $this->result = $connection->update_patient(json_decode($this->patient, true));
 
         if (is_error($this->result)) {
-            $this->json_error("C'e stato un errore nel inserire il paziente", $this->result->getErrorName());
+            $this->json_error("C'e stato un errore nel aggiornare il paziente", $this->result->getErrorName());
         }
     }
 
@@ -34,5 +34,5 @@ class insert_patient extends communication {
     }
 }
 
-$insert_patient = new insert_patient();
-$insert_patient->execute();
+$update_patient = new update_patient();
+$update_patient->execute();

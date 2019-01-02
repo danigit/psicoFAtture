@@ -1,0 +1,31 @@
+<div ng-controller="UpdatePatientController">
+    <md-toolbar class="background-pink">
+        <div class="md-toolbar-tools">
+            <md-button aria-label="Go Back" ng-click="home()" class="font-bold">HOME
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content class="margin-lr-20 margin-top-10">
+        <md-list layout="column">
+            <div layout="column" layout-align="center center">
+                <md-subheader><h1>Tutti i pazienti</h1></md-subheader>
+                <label class="width-80 margin-lr-auto margin-bottom-3">
+                    <input type="text" ng-model="patient" placeholder="Inserisci stringa per selezionare pazienti" class="outline-none text-center full-width padding-5 font-large border-radius-10-px border-1-pink">
+                </label>
+            </div>
+            <md-list-item ng-repeat="patient in patients | filter : patient" class="font-bold font-large"><img src="../img/patient-icon.jpg">
+                <span class="margin-lr-20-px">{{patient.number}}</span>
+                <span class="margin-r-20-px">{{patient.name}}</span>
+                <span class="margin-r-20-px">{{patient.surname}}</span>
+                <span class="margin-r-20-px">{{patient.street}}</span>
+                <span class="margin-r-20-px">{{patient.fiscal_code}}</span>
+                <div layout="column" layout-align="center center">
+                <span><md-button class="md-accent" ng-click="updatePatientDialog($event, patient.number)">AGGIORNA PAZIENTE</md-button></span>
+                <span><md-button class="md-accent" ng-click="removePatient(patient.number)">ELIMINA PAZIENTE</md-button></span>
+                </div>
+                <md-divider></md-divider>
+            </md-list-item>
+        </md-list>
+    </md-content>
+</div>

@@ -128,23 +128,64 @@ class Connection{
 
         while ($row = mysqli_fetch_assoc($this->result)){
             $return_result[] = array('number' => $row['id'], 'name' => $row['name'], 'surname' => $row['surname'],
-                'street' => $row['street'], 'fiscal_code' => $row['fiscal_code']);
+                'street' => $row['street'], 'fiscal_code' => $row['fiscal_code'], 'p_iva' => $row['p_iva']);
         }
 
         return $return_result;
     }
 
+    /**
+     * Function tha insert a new patient into database
+     * @param $patient - the patient data
+     * @return db_errors|mixed
+     */
     function insert_patient($patient){
-        $query = 'INSERT INTO patient (name, surname, street, fiscal_code, p_iva) VALUES (?, ?, ?, ?, ?)';
-        $result = $this->execute_inserting($query, "sssss", $patient['name'], $patient['surname'], $patient['street'], $patient['fiscal_code'], $patient['p_iva']);
+        $this->query = 'INSERT INTO patient (name, surname, street, fiscal_code, p_iva) VALUES (?, ?, ?, ?, ?)';
+        $this->result = $this->execute_inserting($this->query, "sssss", $patient['name'], $patient['surname'], $patient['street'],
+                                                    $patient['fiscal_code'], $patient['p_iva']);
 
-        if ($result instanceof db_errors) {
-            return $result;
-        } else if ($result) {
+        if ($this->result instanceof db_errors) {
+            return $this->result;
+        } else if ($this->result) {
             return $this->connection->insert_id;
         }
 
         return new db_errors(db_errors::$ERROR_ON_INSERTING_PATIENT);
+    }
+
+    /**
+     * Function tha update an existing patient
+     * @param $patient - data to be updated
+     * @return db_errors|int
+     */
+    function update_patient($patient){
+        $this->query = "UPDATE patient SET name=?, surname=?, street=?, fiscal_code=?, p_iva=? WHERE id=?";
+
+        $this->result = $this->execute_selecting($this->query, "sssssi", $patient['name'], $patient['surname'], $patient['street'],
+                                                $patient['fiscal_code'], $patient['p_iva'], $patient['number']);
+
+        if($this->result instanceof db_errors)
+            return $this->result;
+
+        if($this->result === false)
+            return new db_errors(db_errors::$ERROR_ON_UPDATING_PATIENT);
+
+        return $this->connection->affected_rows;
+    }
+
+    /**
+     * Function that deletes an patient from the database
+     * @param $id
+     * @return bool|db_errors
+     */
+    function remove_patient($id){
+        $this->query = "DELETE FROM patient WHERE id = ?";
+        $this->result = $this->execute_selecting($this->query, "i", $id);
+
+        if ($this->result instanceof db_errors)
+            return $this->result;
+
+        return $this->result->affected_rows == 1 ? true : new db_errors(db_errors::$ERROR_ON_DELETING_PATIENT);
     }
 
     /**

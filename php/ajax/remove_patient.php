@@ -11,21 +11,21 @@ require_once 'helper.php';
 header('Access-Control-Allow-Origin: http://localhost:3000');
 
 
-class insert_patient extends communication {
-    private $patient, $result;
+class remove_patient extends communication {
+    private $id, $result;
 
     protected function input_elaboration(){
-        $this->patient = $this->validate_string('patient');
-        if ($this->patient == false)
-            $this->json_error('Nessun paziente ricevuto');
+        $this->id = $this->validate_string('id');
+        if ($this->id == false)
+            $this->json_error('Nessun id ricevuto');
     }
 
     protected function retrieve_data(){
         $connection = $this->get_connection();
-        $this->result = $connection->insert_patient(json_decode($this->patient, true));
+        $this->result = $connection->remove_patient($this->id);
 
         if (is_error($this->result)) {
-            $this->json_error("C'e stato un errore nel inserire il paziente", $this->result->getErrorName());
+            $this->json_error("C'e stato un errore nel eliminare il paziente", $this->result->getErrorName());
         }
     }
 
@@ -34,5 +34,5 @@ class insert_patient extends communication {
     }
 }
 
-$insert_patient = new insert_patient();
-$insert_patient->execute();
+$remove_patient = new remove_patient();
+$remove_patient->execute();

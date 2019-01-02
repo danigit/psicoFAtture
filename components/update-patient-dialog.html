@@ -1,0 +1,66 @@
+<md-dialog aria-label="Aggiornamento cliente" class="full-width">
+    <form id="updatetPatientForm" name="updatePatientForm">
+
+        <md-toolbar class="background-pink">
+            <div class="md-toolbar-tools">
+                <h2>Aggiornamento cliente</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="hide()">
+                    <img src="../img/close-icon.jpg" aria-label="Close dialog"/>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div layout="column" layout-align="center">
+                    <div layout="column">
+                        <h3>Modificare i dati</h3>
+                    </div>
+                    <md-input-container>
+                        <label>Nome</label>
+                        <input required type="text" name="updatePatientName" ng-model="patient.name" title="">
+                        <div ng-messages="updatePatientForm.updatePatientName.$error" role="alert">
+                            <div ng-message="required">Inserire un nome</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Cognome</label>
+                        <input required type="text" name="updatePatientSurname" ng-model="patient.surname" title="">
+                        <div ng-messages="updatePatientForm.updatePatientSurname.$error" role="alert">
+                            <div ng-message="required">Inserire il cognome</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Indirizzo</label>
+                        <input required type="text" name="updatePatientStreet" ng-model="patient.street" title="">
+                        <div ng-messages="updatePatientForm.updatePatientStreet.$error" role="alert">
+                            <div ng-message="required">Inserire l'indirizzo</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Codice Fiscale</label>
+                        <input required type="text" name="updatePatientFiscalCode" ng-model="patient.fiscal_code" title="">
+                        <div ng-messages="updatePatientForm.updatePatientFiscalCode.$error" role="alert">
+                            <div ng-message="required">Inserire il codice fiscale</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Partita iva</label>
+                        <input type="text" name="updatePatientIVA" ng-model="patient.p_iva" title="">
+                    </md-input-container>
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-accent" ng-click="hide()">
+                ANULLA
+            </md-button>
+            <md-button class="md-accent" ng-click="updatePatient(updatePatientForm.$valid)">
+                AGGIORNA DATI CLIENTE
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

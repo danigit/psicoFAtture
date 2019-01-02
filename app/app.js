@@ -14,8 +14,10 @@
                 controller: 'HomeController'})
             .when('/generate-invoice', {
                 templateUrl: './components/generate-invoice.html',
-                controller: 'GenerateInvoiceController'
-            })
+                controller: 'GenerateInvoiceController'})
+            .when('/update-patient', {
+                templateUrl: './components/update-patient.html',
+                controller: 'UpdatePatientController'})
             .otherwise({
                 template: '404'
             });
@@ -33,6 +35,7 @@
     app.controller('LastInvoicesController', LastInvoicesController);
     app.controller('GenerateInvoiceController', GenerateInvoiceController);
     app.controller('PatientsController', PatientsController);
+    app.controller('UpdatePatientController', UpdatePatientController);
 
     //SERVICES
     app.service('LoginService', LoginService);
@@ -107,6 +110,10 @@
             }, function () {
                 //TODO Show error
             })
+        };
+
+        $scope.updatePatient = function () {
+            $location.path('/update-patient');
         }
     }
 
@@ -148,11 +155,27 @@
         }
     }
 
+    /**
+     * Function that haldles the patients
+     * @type {string[]}
+     */
     PatientsController.$inject = ['$scope', '$mdDialog', 'PatientsService'];
     function PatientsController($scope, $mdDialog, PatientsService){
         $scope.patients = [];
+        //TODO Maibe it doesn't serve
         $scope.status = ' ';
         $scope.customFullscreen = false;
+
+        //Getting the patients
+        let promise = PatientsService.getPatients();
+
+        promise.then(
+            function (response) {
+                if (response.data.response){
+                    $scope.patients = response.data.result;
+                }
+            }
+        );
 
         //Function that handles the dialog for the invoice values
         $scope.generateInvoiceDialog = function(event, id){
@@ -191,6 +214,11 @@
                 //TODO Show error
             })
         };
+    }
+
+    UpdatePatientController.$inject = ['$scope', '$location', '$mdDialog', 'PatientsService'];
+    function UpdatePatientController($scope, $location, $mdDialog, PatientsService){
+        $scope.patients = [];
 
         //Getting the patients
         let promise = PatientsService.getPatients();
@@ -201,7 +229,89 @@
                     $scope.patients = response.data.result;
                 }
             }
-        )
+        );
+
+        //Function that handle the updating of the patient
+        $scope.updatePatientDialog = function (event, id) {
+            $mdDialog.show({
+                locals: {passedPatient: $scope.patients[id - 1]},
+                templateUrl: '../components/update-patient-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: event,
+                clickOutsideToClose: true,
+                fullscreen: $scope.customFullscreen,
+                controller: ['$scope', 'passedPatient', 'PatientsService', function ($scope, passedPatient, PatientsService) {
+                    $scope.patient = Object.assign({}, passedPatient);
+
+                    $scope.hide = function(){
+                        $mdDialog.hide();
+                    };
+
+                    //Function that generates the invoice pdf
+                    $scope.updatePatient = function (form){
+                        if (form){
+                            let promise = PatientsService.updatePatient($scope.patient);
+                            promise.then(
+                                function (response) {
+                                    if (response.data.result === 1){
+                                        PatientsService.getPatients().then(
+                                            function (response) {
+                                                if (response.data.response) {
+                                                    $scope.patients = response.data.result;
+                                                    location.reload();
+                                                }
+                                            }
+                                        )
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }]
+            })
+            .then(function (answer) {
+                //TODO Show success
+            }, function () {
+                //TODO Show error
+            })
+        };
+
+        //Function that removes a patient
+        $scope.removePatient = function(id){
+            console.log(id);
+            let promise = PatientsService.removePatient(id);
+
+            let confirm = $mdDialog.confirm()
+                .title('ELIMINAZIONE PAZIENTE')
+                .textContent('Sei sicuro di voler eliminare il paziente')
+                .ok('ELIMINA')
+                .cancel('CANCELLA');
+
+            //Dialog to confirm the elimination of the patient
+            $mdDialog.show(confirm)
+                .then(
+                    function () {
+                        promise.then(
+                            function (response) {
+                                if (response.data.response){
+                                    PatientsService.getPatients().then(
+                                        function (response) {
+                                            if (response.data.response) {
+                                                $scope.patients = response.data.result;
+                                                location.reload();
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        )
+                    }
+                );
+        };
+
+        $scope.home = function () {
+            $location.path('/home')
+        }
     }
 
     /**
@@ -237,16 +347,39 @@
         }
     }
 
+    /**
+     * Service that handles the patients
+     * @type {string[]}
+     */
     PatientsService.$inject = ['$http'];
     function PatientsService($http) {
         let service = this;
+        service.patients = [];
 
         service.insertPatient = function(data){
+            console.log('data');
+            console.log(data);
             return $http({
                 method: 'POST',
                 url   : 'http://localhost/psicoFatture/php/ajax/insert_patient.php',
                 params: {patient: data},
             });
+        };
+
+        service.updatePatient = function(data){
+          return $http({
+              method: 'POST',
+              url   : 'http://localhost/psicoFatture/php/ajax/update_patient.php',
+              params: {patient: data}
+          })
+        };
+
+        service.removePatient = function(id){
+            return $http({
+                method: 'POST',
+                url   : 'http://localhost/psicoFatture/php/ajax/remove_patient.php',
+                params: {id: id}
+            })
         };
 
         service.generateInvoicePdf = function(patient){
@@ -378,7 +511,7 @@
             return $http({
                 method: 'GET',
                 url: 'http://localhost/psicoFatture/php/ajax/get_patients.php'
-            })
+            });
         }
     }
 })();
