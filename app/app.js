@@ -2,8 +2,9 @@
     'use strict';
 
     let app = angular.module('main', ['ngRoute', 'ngMaterial', 'ngMessages']);
+    let invoiceNumber = 1;
 
-    app.config(function ($routeProvider) {
+    app.config(function ($routeProvider, $mdDateLocaleProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: './components/login.html',
@@ -17,15 +18,23 @@
             })
             .otherwise({
                 template: '404'
-            })
+            });
+
+        //Configuration for the format of the date
+        $mdDateLocaleProvider.formatDate = function (date) {
+            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+        }
     });
 
+    //CONTROLLERS
     app.controller('LoginController', LoginController);
     app.controller('HomeNavController', HomeNavController);
     app.controller('HomeController', HomeController);
     app.controller('LastInvoicesController', LastInvoicesController);
     app.controller('GenerateInvoiceController', GenerateInvoiceController);
     app.controller('PatientsController', PatientsController);
+
+    //SERVICES
     app.service('LoginService', LoginService);
     app.service('HomeService', HomeService);
     app.service('PatientsService', PatientsService);
@@ -104,13 +113,50 @@
         }
     }
 
-    PatientsController.$inject = ['$scope', 'PatientsService'];
-    function PatientsController($scope, PatientsService){
+    PatientsController.$inject = ['$scope', '$mdDialog', 'PatientsService'];
+    function PatientsController($scope, $mdDialog, PatientsService){
         $scope.patients = [];
-        $scope.generateInvoiceButton = function(id){
-            PatientsService.generateInvoicePdf($scope.patients[id - 1]);
+        $scope.status = ' ';
+        $scope.customFullscreen = false;
+
+        //Function that handles the dialog for the invoice values
+        $scope.generateInvoiceDialog = function(event, id){
+
+            $mdDialog.show({
+                locals: {passedPatient: $scope.patients[id - 1]},
+                templateUrl: '../components/generate-invoice-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: event,
+                clickOutsideToClose: true,
+                fullscreen: $scope.customFullscreen,
+                controller: ['$scope', 'passedPatient', 'PatientsService', function ($scope, passedPatient, PatientsService) {
+                    $scope.patient = Object.create(passedPatient);
+                    $scope.patient.city  = $scope.patient.street.split('-')[1].trim() + ' - ' + $scope.patient.street.split('-')[2];
+                    $scope.patient.street = $scope.patient.street.split('-')[0];
+                    $scope.patient.number = invoiceNumber;
+                    $scope.patient.date = new Date();
+
+                    $scope.hide = function(){
+                        $mdDialog.hide();
+                    };
+
+                    //Function that generates the invoice pdf
+                    $scope.generateInvoice = function (form){
+                        if (form){
+                            PatientsService.generateInvoicePdf($scope.patient);
+                            invoiceNumber++;
+                        }
+                    }
+                }]
+            })
+            .then(function (answer) {
+               //TODO Show success
+            }, function () {
+                //TODO Show error
+            })
         };
 
+        //Getting the patients
         let promise = PatientsService.getPatients();
 
         promise.then(

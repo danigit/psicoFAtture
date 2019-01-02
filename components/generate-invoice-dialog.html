@@ -1,0 +1,92 @@
+<md-dialog aria-label="Generazione Fatture">
+    <form id="generateInvoiceForm" name="generateInvoiceForm">
+
+    <md-toolbar class="background-pink">
+            <div class="md-toolbar-tools">
+                <h2>Generazione Fattura</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="hide()">
+                    <img src="../img/close-icon.jpg" aria-label="Close dialog"/>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                    <div layout="column" layout-align="center">
+                        <div layout="column" class="margin-top-10 margin-bottom-10">
+                            <h3>Verificare i dati prima di generare la fattura</h3>
+                        </div>
+                        <md-input-container>
+                            <label>Numero fattura</label>
+                            <input required type="text" name="invoiceNumber" ng-model="patient.number" title="">
+                            <div ng-messages="generateInvoiceForm.invoiceNumber.$error" role="alert">
+                                <div ng-message="required">Inserire il numero della fattura</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Nome</label>
+                            <input required type="text" name="generateInvoiceName" ng-model="patient.name" title="">
+                            <div ng-messages="generateInvoiceForm.generateInvoiceName.$error" role="alert">
+                                <div ng-message="required">Inserire un nome</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Cognome</label>
+                            <input required type="text" name="generateInvoiceSurname" ng-model="patient.surname" title="">
+                            <div ng-messages="generateInvoiceForm.generateInvoiceSurname.$error" role="alert">
+                                <div ng-message="required">Inserire il cognome</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Indirizzo</label>
+                            <input required type="text" name="generateInvoiceStreet" ng-model="patient.street.split('-')[0]" title="">
+                            <div ng-messages="generateInvoiceForm.generateInvoiceStreet.$error" role="alert">
+                                <div ng-message="required">Inserire l'indirizzo</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Citta' e CAP</label>
+                            <input required type="text" name="generateInvoiceCityCAP" ng-model="patient.city" title="">
+                            <div ng-messages="generateInvoiceForm.generateInvoiceCityCAP.$error" role="alert">
+                                <div ng-message="required">Inserire la citta' e il CAP</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Codice Fiscale</label>
+                            <input required type="text" name="generateInvoiceFiscalCode" ng-model="patient.fiscal_code" title="">
+                            <div ng-messages="generateInvoiceForm.generateInvoiceFiscalCode.$error" role="alert">
+                                <div ng-message="required">Inserire il codice fiscale</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Importo</label>
+                            <input required type="number" name="generateInvoiceSum" title="" value="60">
+                            <div ng-messages="generateInvoiceForm.generateInvoiceSum.$error" role="alert">
+                                <div ng-message="required">Inserire l'importo della fattura</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <div layout="row">
+                                <div layout="column" layout-align="center">
+                                    <span class="font-large margin-r-20-px color-lightgray">Data</span>
+                                </div>
+                                <md-datepicker ng-model="patient.date" md-placeholder="Inserisci data"></md-datepicker>
+                                <md-button class="md-accent" ng-click="ctrl.isOpen = true">Scegli data</md-button>
+                            </div>
+                        </md-input-container>
+                    </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-accent" ng-click="hide()">
+                ANULLA
+            </md-button>
+            <md-button class="md-accent" ng-click="generateInvoice(generateInvoiceForm.$valid)">
+                GENERA FATTURA
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

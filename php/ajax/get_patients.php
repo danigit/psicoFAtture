@@ -6,6 +6,8 @@
  * Time: 19.30
  */
 
+header('Access-Control-Allow-Origin: http://localhost:3000');
+
 require_once 'communication.php';
 require_once 'helper.php';
 

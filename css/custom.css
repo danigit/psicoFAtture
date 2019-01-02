@@ -65,11 +65,11 @@ COLORS
 /**
 FRAMEWORK
  */
-md-input-container label{
+#loginForm md-input-container label{
     color: #ffffff!important;
 }
 
-.md-input{
+#loginForm .md-input{
     border-color: #ffffff!important;
 }
 
@@ -82,6 +82,10 @@ MARGINS
 
 .margin-top-10{
     margin-top: 10%;
+}
+
+.margin-bottom-10{
+    margin-bottom: 10%;
 }
 
 .margin-bottom-3{
@@ -110,6 +114,7 @@ MARGINS
     margin-left: 20px;
     margin-right: 20px;
 }
+
 /**
 PADDING
  */
@@ -129,6 +134,11 @@ PADDING
     padding-left: 10px;
 }
 
+.padding-lr-10{
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
 /**
 BORDER
  */
@@ -146,6 +156,10 @@ COLOR
 
 .color-pink{
     color: #FF387E;
+}
+
+.color-lightgray{
+    color: #8A8A8A;
 }
 
 /**
