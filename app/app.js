@@ -7,59 +7,59 @@
     app.config(function ($routeProvider, $mdDateLocaleProvider) {
         $routeProvider
             .when('/', {
-                resolve: {
-                    check: function ($location, LoginService) {
-                        LoginService.isLogged().then(
-                            function (response) {
-                                if (response.data.response){
-                                    $location.path('/home');
-                                }
-                            }
-                        );
-                    },
-                },
+                // resolve: {
+                    // check: function ($location, LoginService) {
+                    //     LoginService.isLogged().then(
+                    //         function (response) {
+                    //             if (response.data.response){
+                    //                 $location.path('/home');
+                    //             }
+                    //         }
+                    //     );
+                    // },
+                // },
                 templateUrl: './components/login.html',
                 controller: 'LoginController'})
             .when('/home',{
-                resolve: {
-                    check: function ($location, LoginService) {
-                        LoginService.isLogged().then(
-                            function (response) {
-                                if (!response.data.response){
-                                    $location.path('/');
-                                }
-                            }
-                        );
-                    },
-                },
+                // resolve: {
+                //     check: function ($location, LoginService) {
+                //         LoginService.isLogged().then(
+                //             function (response) {
+                //                 if (!response.data.response){
+                //                     $location.path('/');
+                //                 }
+                //             }
+                //         );
+                //     },
+                // },
                 templateUrl: './components/home.html',
                 controller: 'HomeController'})
             .when('/generate-invoice', {
-                resolve: {
-                    check: function ($location, LoginService) {
-                        LoginService.isLogged().then(
-                            function (response) {
-                                if (!response.data.response){
-                                    $location.path('/');
-                                }
-                            }
-                        );
-                    },
-                },
+                // resolve: {
+                //     check: function ($location, LoginService) {
+                //         LoginService.isLogged().then(
+                //             function (response) {
+                //                 if (!response.data.response){
+                //                     $location.path('/');
+                //                 }
+                //             }
+                //         );
+                //     },
+                // },
                 templateUrl: './components/generate-invoice.html',
                 controller: 'GenerateInvoiceController'})
             .when('/update-patient', {
-                resolve: {
-                    check: function ($location, LoginService) {
-                        LoginService.isLogged().then(
-                            function (response) {
-                                if (!response.data.response){
-                                    $location.path('/');
-                                }
-                            }
-                        );
-                    },
-                },
+                // resolve: {
+                //     check: function ($location, LoginService) {
+                //         LoginService.isLogged().then(
+                //             function (response) {
+                //                 if (!response.data.response){
+                //                     $location.path('/');
+                //                 }
+                //             }
+                //         );
+                //     },
+                // },
                 templateUrl: './components/update-patient.html',
                 controller: 'UpdatePatientController'})
             .otherwise({
@@ -80,6 +80,7 @@
     app.controller('GenerateInvoiceController', GenerateInvoiceController);
     app.controller('PatientsController', PatientsController);
     app.controller('UpdatePatientController', UpdatePatientController);
+    app.controller('DialogController', DialogController);
 
     //SERVICES
     app.service('LoginService', LoginService);
@@ -132,7 +133,6 @@
 
         $scope.insertPatient = function (event) {
             $mdDialog.show({
-                // locals: {passedPatient: $scope.patients[id - 1]},
                 templateUrl: '../components/insert-patient-dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: event,
@@ -149,8 +149,18 @@
                     };
 
                     $scope.insertPatient = function(form){
-                        if (form)
-                            PatientsService.insertPatient($scope.patient)
+                        form.$submitted = 'true';
+                        if (form.$valid) {
+                            let promise = PatientsService.insertPatient($scope.patient);
+
+                            promise.then(
+                                function (response) {
+                                    if (response.data.response){
+                                        showDialog('success-dialog', $mdDialog);
+                                    }
+                                }
+                            )
+                        }
                     };
 
                     $scope.hide = function(){
@@ -378,6 +388,13 @@
         }
     }
 
+    DialogController.$inject = ['$scope', '$mdDialog'];
+    function DialogController($scope, $mdDialog){
+        $scope.hide = function () {
+            $mdDialog.hide();
+        }
+    }
+
     /**
      * Service that connects with the database and control the validity of the login credentials
      * @type {string[]}
@@ -437,8 +454,6 @@
         service.patients = [];
 
         service.insertPatient = function(data){
-            console.log('data');
-            console.log(data);
             return $http({
                 method: 'POST',
                 url   : 'http://localhost/psicoFatture/php/ajax/insert_patient.php',
@@ -593,5 +608,14 @@
                 url: 'http://localhost/psicoFatture/php/ajax/get_patients.php'
             });
         }
+    }
+
+    function showDialog(template, dialog) {
+        dialog.show({
+            templateUrl: '../components/' + template + '.html',
+            parent: angular.element(document.body),
+            controller: 'DialogController',
+            clickOutsideToClose: true,
+        })
     }
 })();

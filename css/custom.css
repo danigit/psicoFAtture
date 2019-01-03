@@ -55,7 +55,7 @@ COLORS
 }
 
 .color-red{
-    color: #E12315;
+    color: #DE2E46;
 }
 
 .background-pink{
@@ -66,6 +66,13 @@ COLORS
     background-color: #ffffff;
 }
 
+.background-green{
+    background-color: #26A650!important;
+}
+
+.background-red{
+    background-color: #DE2E46!important;
+}
 /**
 FRAMEWORK
  */
@@ -170,6 +177,10 @@ COLOR
     color: #8A8A8A;
 }
 
+.color-green{
+    color: #26A650
+}
+
 /**
 OTHER
  */
@@ -187,4 +198,12 @@ DISPLAY
 
 .background-transparent{
     background-color: transparent;
+}
+
+/**
+ELEMENTS
+ */
+.success-dialog-content{
+    padding-left: 20px;
+    padding-right: 80px;
 }

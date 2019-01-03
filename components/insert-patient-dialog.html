@@ -15,7 +15,7 @@
             <div class="md-dialog-content">
                 <div layout="column" layout-align="center">
                     <div layout="column">
-                        <h3>Compilare i campi richiesti</h3>
+                        <h3>COMPILARE I CAMPI RICHIESTI</h3>
                     </div>
                     <md-input-container>
                         <label>Nome</label>
@@ -47,11 +47,9 @@
                     </md-input-container>
                     <md-input-container>
                         <label>Partita iva</label>
-                        <input required type="text" name="insertPatientIVA" ng-model="patient.p_iva" title="">
-                        <div ng-messages="insertPatientForm.insertPatientIVA.$error" role="alert">
-                            <div ng-message="required">Inserire l'importo della fattura</div>
-                        </div>
+                        <input type="text" name="insertPatientIVA" ng-model="patient.p_iva" title="">
                     </md-input-container>
+                    <div><p>I campi contrasegnati con (*) sono obligatori</p></div>
                 </div>
             </div>
         </md-dialog-content>
@@ -61,7 +59,7 @@
             <md-button class="md-accent" ng-click="hide()">
                 ANULLA
             </md-button>
-            <md-button class="md-accent" ng-click="insertPatient(insertPatientForm.$valid)">
+            <md-button class="md-accent" ng-click="insertPatient(insertPatientForm)">
                 INSERISCI CLIENTE
             </md-button>
         </md-dialog-actions>
