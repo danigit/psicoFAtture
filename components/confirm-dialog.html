@@ -1,0 +1,28 @@
+<md-dialog aria-label="Inserimento cliente success" ng-controller="DialogController">
+
+    <md-toolbar class="background-red">
+        <div class="md-toolbar-tools" id="success-title">
+            <h2>ELIMINAZIONE CLIENTE</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="hide()">
+                <img src="../img/close-icon-red.jpg" aria-label="Close dialog"/>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="column">
+            <h3 id="success-content" class="success-dialog-content">Sei sicuro di voler eliminare il cliente</h3>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="color-red" ng-click="hide(); ">
+            CHIUDI
+        </md-button>
+        <md-button class="color-red" ng-click="removePatientConfirm()">
+            ELIMINA
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

@@ -25,6 +25,13 @@
                             </div>
                         </md-input-container>
                         <md-input-container>
+                            <label>Descrizione</label>
+                            <input required type="text" name="generateInvoiceDescription" ng-model="patient.description" title="">
+                            <div ng-messages="generateInvoiceForm.generateInvoiceDescription.$error" role="alert">
+                                <div ng-message="required">Inserire una descrizione</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
                             <label>Nome</label>
                             <input required type="text" name="generateInvoiceName" ng-model="patient.name" title="">
                             <div ng-messages="generateInvoiceForm.generateInvoiceName.$error" role="alert">
@@ -84,7 +91,7 @@
             <md-button class="md-accent" ng-click="hide()">
                 ANULLA
             </md-button>
-            <md-button class="md-accent" ng-click="generateInvoice(generateInvoiceForm.$valid)">
+            <md-button class="md-accent" ng-click="generateInvoice(generateInvoiceForm)">
                 GENERA FATTURA
             </md-button>
         </md-dialog-actions>

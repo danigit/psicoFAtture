@@ -73,6 +73,7 @@ COLORS
 .background-red{
     background-color: #DE2E46!important;
 }
+
 /**
 FRAMEWORK
  */
@@ -163,6 +164,14 @@ BORDER
 
 .border-radius-10-px{
     border-radius: 10px;
+}
+
+.border-1-red{
+    border: 1px solid #DE2E46;
+}
+
+.border-1-warn{
+    border: 1px solid #FF512F;
 }
 
 /**

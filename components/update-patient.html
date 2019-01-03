@@ -14,15 +14,22 @@
                     <input type="text" ng-model="patient" placeholder="Cerca..." class="outline-none text-center full-width padding-5 font-large border-radius-10-px border-1-pink">
                 </label>
             </div>
-            <md-list-item ng-repeat="patient in patients | filter : patient" class="font-bold font-large"><img src="../img/patient-icon.jpg">
-                <span class="margin-lr-20-px">{{patient.number}}</span>
-                <span class="margin-r-20-px">{{patient.name}}</span>
-                <span class="margin-r-20-px">{{patient.surname}}</span>
-                <span class="margin-r-20-px">{{patient.street}}</span>
-                <span class="margin-r-20-px">{{patient.fiscal_code}}</span>
-                <div layout="column" layout-align="center center">
-                <span><md-button class="md-accent" ng-click="updatePatientDialog($event, patient.number)">AGGIORNA PAZIENTE</md-button></span>
-                <span><md-button class="md-accent" ng-click="removePatient(patient.number)">ELIMINA PAZIENTE</md-button></span>
+            <md-list-item ng-repeat="patient in patients | filter : patient" class="font-bold font-large">
+                <div layout="row" layout-align="none center" class="full-width">
+                    <img src="../img/patient-icon.jpg">
+                    <div layout="column" layout-align="center none" class="full-width">
+                        <div layout="row" layout-align="none center">
+                            <span class="margin-lr-20-px">{{patient.number}}</span>
+                            <span class="margin-r-20-px">{{patient.name}}</span>
+                            <span class="margin-r-20-px">{{patient.surname}}</span>
+                            <span class="margin-r-20-px">{{patient.street}}</span>
+                            <span class="margin-r-20-px">{{patient.fiscal_code}}</span>
+                        </div>
+                    </div>
+                    <div layout="column" layout-align="center end">
+                        <span><md-button class="md-warn" ng-click="updatePatientDialog($event, patient.number)">AGGIORNA</md-button></span>
+                        <span><md-button class="color-red" ng-click="removePatient(patient.number)">ELIMINA</md-button></span>
+                    </div>
                 </div>
                 <md-divider></md-divider>
             </md-list-item>

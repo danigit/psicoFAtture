@@ -2,7 +2,6 @@
     'use strict';
 
     let app = angular.module('main', ['ngRoute', 'ngMaterial', 'ngMessages']);
-    let invoiceNumber = 1;
 
     app.config(function ($routeProvider, $mdDateLocaleProvider) {
         $routeProvider
@@ -86,6 +85,7 @@
     app.service('LoginService', LoginService);
     app.service('HomeService', HomeService);
     app.service('PatientsService', PatientsService);
+    app.service('DialogService', DialogService);
 
     /**
      * Function that handle the login page
@@ -125,8 +125,8 @@
      * Function that handle the navbar
      * @type {string[]}
      */
-    HomeNavController.$inject = ['$scope', '$location', '$mdDialog', 'LoginService'];
-    function HomeNavController($scope, $location, $mdDialog, LoginService){
+    HomeNavController.$inject = ['$scope', '$location', '$mdDialog', 'LoginService', 'DialogService'];
+    function HomeNavController($scope, $location, $mdDialog, LoginService, DialogService){
         $scope.generateInvoice = function () {
             $location.path('/generate-invoice')
         };
@@ -156,7 +156,9 @@
                             promise.then(
                                 function (response) {
                                     if (response.data.response){
-                                        showDialog('success-dialog', $mdDialog);
+                                        DialogService.showDialog('success-insert-dialog', $mdDialog);
+                                    }else {
+                                        DialogService.showDialog('error-insert-dialog', $mdDialog);
                                     }
                                 }
                             )
@@ -226,7 +228,9 @@
     function GenerateInvoiceController($scope, $location){
         $scope.home = function () {
             $location.path('/home')
-        }
+        };
+
+
     }
 
     /**
@@ -262,12 +266,24 @@
                 clickOutsideToClose: true,
                 fullscreen: $scope.customFullscreen,
                 controller: ['$scope', 'passedPatient', 'PatientsService', function ($scope, passedPatient, PatientsService) {
-                    console.log(passedPatient);
                     $scope.patient = Object.create(passedPatient);
+                    $scope.patient.description = '';
                     $scope.patient.city  = $scope.patient.street.split('-')[1].trim() + ' - ' + $scope.patient.street.split('-')[2];
                     $scope.patient.street = $scope.patient.street.split('-')[0];
-                    $scope.patient.number = invoiceNumber;
-                    $scope.patient.date = new Date();
+                    let promise = PatientsService.getInvoiceNumber();
+                    promise.then(
+                        function (response) {
+                            if (response.data.response) {
+                                $scope.patient.number = parseInt(response.data.result) + 1;
+                            }
+
+                        }
+                    );
+
+                    $scope.patient.date = new Date().toJSON().slice(0, 10);
+                    $scope.patient.patientId = passedPatient['number'];
+                    console.log($scope.patient.date);
+                    console.log($scope.patient);
 
                     $scope.hide = function(){
                         $mdDialog.hide();
@@ -275,9 +291,18 @@
 
                     //Function that generates the invoice pdf
                     $scope.generateInvoice = function (form){
-                        if (form){
+                        form.$submitted = 'true';
+                        if (form.$valid){
                             PatientsService.generateInvoicePdf($scope.patient);
-                            invoiceNumber++;
+                            let promise = PatientsService.insertInvoice($scope.patient);
+
+                            promise.then(
+                                function (response) {
+                                    if (response.data.response) {
+                                        $mdDialog.hide();
+                                    }
+                                }
+                            )
                         }
                     }
                 }]
@@ -290,8 +315,8 @@
         };
     }
 
-    UpdatePatientController.$inject = ['$scope', '$location', '$mdDialog', 'PatientsService'];
-    function UpdatePatientController($scope, $location, $mdDialog, PatientsService){
+    UpdatePatientController.$inject = ['$scope', '$location', '$mdDialog', 'PatientsService', 'DialogService'];
+    function UpdatePatientController($scope, $location, $mdDialog, PatientsService, DialogService){
         $scope.patients = [];
 
         //Getting the patients
@@ -327,12 +352,15 @@
                             let promise = PatientsService.updatePatient($scope.patient);
                             promise.then(
                                 function (response) {
-                                    if (response.data.result === 1){
+                                    if (response.data.response){
                                         PatientsService.getPatients().then(
                                             function (response) {
                                                 if (response.data.response) {
                                                     $scope.patients = response.data.result;
-                                                    location.reload();
+                                                    $mdDialog.hide();
+                                                    DialogService.showDialog('success-update-dialog', $mdDialog);
+                                                }else {
+                                                    DialogService.showDialog('error-update-dialog', $mdDialog);
                                                 }
                                             }
                                         )
@@ -352,35 +380,8 @@
 
         //Function that removes a patient
         $scope.removePatient = function(id){
-            console.log(id);
-            let promise = PatientsService.removePatient(id);
-
-            let confirm = $mdDialog.confirm()
-                .title('ELIMINAZIONE PAZIENTE')
-                .textContent('Sei sicuro di voler eliminare il paziente')
-                .ok('ELIMINA')
-                .cancel('CANCELLA');
-
-            //Dialog to confirm the elimination of the patient
-            $mdDialog.show(confirm)
-                .then(
-                    function () {
-                        promise.then(
-                            function (response) {
-                                if (response.data.response){
-                                    PatientsService.getPatients().then(
-                                        function (response) {
-                                            if (response.data.response) {
-                                                $scope.patients = response.data.result;
-                                                location.reload();
-                                            }
-                                        }
-                                    )
-                                }
-                            }
-                        )
-                    }
-                );
+            DialogService.showConfirm('confirm-dialog', $mdDialog);
+            DialogService.id = id;
         };
 
         $scope.home = function () {
@@ -388,10 +389,40 @@
         }
     }
 
-    DialogController.$inject = ['$scope', '$mdDialog'];
-    function DialogController($scope, $mdDialog){
+    /**
+     * Function that handles the dialog window
+     * @type {string[]}
+     */
+    DialogController.$inject = ['$scope', '$mdDialog', 'DialogService', 'PatientsService'];
+    function DialogController($scope, $mdDialog, DialogService, PatientsService){
         $scope.hide = function () {
             $mdDialog.hide();
+        };
+
+        $scope.reload = function () {
+            location.reload();
+        };
+
+        $scope.removePatientConfirm = function () {
+            let promise = PatientsService.removePatient(DialogService.id);
+
+            promise.then(
+                function (response) {
+                    if (response.data.response){
+                        PatientsService.getPatients().then(
+                            function (response) {
+                                if (response.data.response) {
+                                    PatientsService.patients = response.data.result;
+                                    location.reload();
+                                }
+                            }
+                        )
+                    }else {
+                        $mdDialog.hide();
+                        DialogService.showDialog('error-delete-dialog', $mdDialog);
+                    }
+                }
+            );
         }
     }
 
@@ -474,6 +505,21 @@
                 method: 'POST',
                 url   : 'http://localhost/psicoFatture/php/ajax/remove_patient.php',
                 params: {id: id}
+            })
+        };
+
+        service.getInvoiceNumber = function(){
+            return $http({
+                method: 'POST',
+                url   : 'http://localhost/psicoFatture/php/ajax/get_invoice_number.php',
+            })
+        };
+
+        service.insertInvoice = function(data){
+            return $http({
+                method: 'POST',
+                url   : 'http://localhost/psicoFatture/php/ajax/insert_invoice.php',
+                params: {patient: data}
             })
         };
 
@@ -610,12 +656,34 @@
         }
     }
 
-    function showDialog(template, dialog) {
-        dialog.show({
-            templateUrl: '../components/' + template + '.html',
-            parent: angular.element(document.body),
-            controller: 'DialogController',
-            clickOutsideToClose: true,
-        })
+    /**
+     * Service that handle the dialog wondow
+     * @type {string[]}
+     */
+    function DialogService() {
+        let service = this;
+        // noinspection BadExpressionStatementJS
+        service.id;
+
+        service.showDialog = function (template, dialog) {
+            dialog.show({
+                templateUrl        : '../components/' + template + '.html',
+                parent             : angular.element(document.body),
+                controller         : 'DialogController',
+                clickOutsideToClose: true,
+            })
+        };
+
+        service.showConfirm = function(template, dialog) {
+            let dialogElement = document.querySelector('success-title');
+            console.log(dialogElement);
+            dialog.show({
+                templateUrl        : '../components/' + template + '.html',
+                parent             : angular.element(document.body),
+                controller         : 'DialogController',
+                clickOutsideToClose: true,
+            })
+        };
     }
+
 })();

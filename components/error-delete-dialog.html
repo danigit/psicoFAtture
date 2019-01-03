@@ -1,0 +1,25 @@
+<md-dialog ng-controller="DialogController" aria-label="Inserimento cliente error">
+
+    <md-toolbar class="background-red">
+        <div class="md-toolbar-tools">
+            <h2>ELIMINAZIONE CLIENTE</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="hide()">
+                <img src="../img/close-icon-red.jpg" aria-label="Close dialog"/>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="column">
+            <h3 class="success-dialog-content">Impossibile eliminare il cliente</h3>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="color-red" ng-click="hide()">
+            CHIUDI
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

@@ -95,7 +95,7 @@ class Connection{
      * @return array|db_errors|mysqli_result
      */
     function get_last_invoices(){
-        $this->query = 'SELECT invoice.id, name, surname, date FROM invoice JOIN patient p 
+        $this->query = 'SELECT invoice.id, p.id AS patientId, invoice.description, name, surname, date FROM invoice JOIN patient p 
                         ON invoice.patient = p.id ORDER BY date DESC ';
 
         $this->result = $this->connection->query($this->query);
@@ -106,7 +106,7 @@ class Connection{
         $return_result = array();
 
         while ($row = mysqli_fetch_assoc($this->result)){
-            $return_result[] = array('number' => $row['id'], 'name' => $row['name'], 'surname' => $row['surname'], 'date' => $row['date']);
+            $return_result[] = array('number' => $row['id'], 'patientId' => $row['patientId'], 'description' => $row['description'], 'name' => $row['name'], 'surname' => $row['surname'], 'date' => $row['date']);
         }
 
         return $return_result;
@@ -186,6 +186,46 @@ class Connection{
             return $this->result;
 
         return $this->result->affected_rows == 1 ? true : new db_errors(db_errors::$ERROR_ON_DELETING_PATIENT);
+    }
+
+    /**
+     * Function that gets the id of the last inserted invoice
+     * @return array|db_errors
+     */
+    function get_invoice_number(){
+        $this->query = 'SELECT id FROM invoice ORDER BY id DESC  LIMIT  1';
+
+        $this->result = $this->connection->query($this->query);
+
+        if ($this->result == false)
+            return new db_errors(db_errors::$ERROR_ON_LOGIN);
+
+        $return_result = array();
+
+        while ($row = mysqli_fetch_assoc($this->result)){
+            $return_result = $row['id'];
+        }
+
+        return $return_result;
+    }
+
+    /**
+     * Function that inserts a new invoice into the database
+     * @param $patient
+     * @return db_errors|mixed
+     */
+    function insert_invoice($patient){
+        $this->query = 'INSERT INTO invoice (description, date, patient) VALUES (?, ?, ?)';
+
+        $this->result = $this->execute_inserting($this->query, "sss", $patient['description'], $patient['date'], $patient['patientId']);
+
+        if ($this->result instanceof db_errors) {
+            return $this->result;
+        } else if ($this->result) {
+            return $this->connection->insert_id;
+        }
+
+        return new db_errors(db_errors::$ERROR_ON_INSERTING_INVOICE);
     }
 
     /**

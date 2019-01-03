@@ -21,23 +21,23 @@
     </div>
 
     <div ng-controller="LastInvoicesController">
-        <div layout="column" class="margin-lr-20">
+        <div layout="column" class="margin-lr-20" ng-controller="PatientsController">
             <div layout="row" layout-align="center center" class="margin-top-10 margin-bottom-3">
                 <md-subheader class="md-primary"><h2 class="color-pink">FATTURE EFFETTUATE</h2></md-subheader>
             </div>
             <table>
                 <tr>
                     <th class="text-left font-large padding-10">Numero</th>
-                    <th class="text-left font-large padding-10">Nome</th>
-                    <th class="text-left font-large padding-10">Cognome</th>
+                    <th class="text-left font-large padding-10">Description</th>
+                    <th class="text-left font-large padding-10">Cliente</th>
                     <th class="text-left font-large padding-10">Data</th>
                 </tr>
                 <tr ng-repeat="invoice in lastInvoices">
                     <td class="padding-10">{{invoice.number}}</td>
-                    <td class="padding-10">{{invoice.name}}</td>
-                    <td class="padding-10">{{invoice.surname}}</td>
+                    <td class="padding-10">{{invoice.description}}</td>
+                    <td class="padding-10">{{invoice.name}}&nbsp;{{invoice.surname}}</td>
                     <td class="padding-10">{{invoice.date}}</td>
-                    <td><md-button class="md-accent">RICHIAMA</md-button></td>
+                    <td><md-button class="md-accent" ng-click="generateInvoiceDialog($event, invoice.patientId)">RICHIAMA</md-button></td>
                 </tr>
             </table>
         </div>

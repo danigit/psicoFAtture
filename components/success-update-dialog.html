@@ -1,8 +1,8 @@
 <md-dialog aria-label="Inserimento cliente success">
 
     <md-toolbar class="background-green">
-        <div class="md-toolbar-tools">
-            <h2>CLIENTE INSERITO</h2>
+        <div class="md-toolbar-tools" id="success-title">
+            <h2>CLIENTE AGGIORNATO</h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="hide()">
                 <img src="../img/close-icon-green.jpg" aria-label="Close dialog"/>
@@ -12,13 +12,13 @@
 
     <md-dialog-content>
         <div layout="column">
-            <h3 class="success-dialog-content">Il cliente e' stato inserito con successo</h3>
+            <h3 id="success-content" class="success-dialog-content">Il clietne e' stato aggiornato con successo</h3>
         </div>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
         <span flex></span>
-        <md-button class="color-green" ng-click="hide()">
+        <md-button class="color-green" ng-click="hide(); reload()">
             CHIUDI
         </md-button>
     </md-dialog-actions>
