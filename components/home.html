@@ -13,6 +13,9 @@
                 <md-nav-item md-nav-click="updatePatient()" name="updatePatient">
                     Gestisci pazienti
                 </md-nav-item>
+                <md-nav-item md-nav-click="logout()" name="updatePatient">
+                    Logout
+                </md-nav-item>
             </md-nav-bar>
         </md-content>
     </div>
@@ -20,7 +23,7 @@
     <div ng-controller="LastInvoicesController">
         <div layout="column" class="margin-lr-20">
             <div layout="row" layout-align="center center" class="margin-top-10 margin-bottom-3">
-                <md-subheader class="md-primary"><h2 class="color-pink">ULTIME 10 FATTURE EFFETTUATE</h2></md-subheader>
+                <md-subheader class="md-primary"><h2 class="color-pink">FATTURE EFFETTUATE</h2></md-subheader>
             </div>
             <table>
                 <tr>

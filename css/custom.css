@@ -54,6 +54,10 @@ COLORS
     color: #000000;
 }
 
+.color-red{
+    color: #E12315;
+}
+
 .background-pink{
     background-color: #FF387E!important;
 }
@@ -146,6 +150,10 @@ BORDER
     border: 1px solid #FF387E;
 }
 
+.border-1{
+    border: 1px solid;
+}
+
 .border-radius-10-px{
     border-radius: 10px;
 }
@@ -167,4 +175,16 @@ OTHER
  */
 .outline-none{
     outline: none;
+}
+
+/**
+DISPLAY
+ */
+
+.opacity-none{
+    opacity: 0;
+}
+
+.background-transparent{
+    background-color: transparent;
 }

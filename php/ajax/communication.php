@@ -16,6 +16,15 @@ abstract class communication{
     abstract protected function retrieve_data();
     abstract protected function return_data();
 
+    function __construct(){
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+
+        session_write_close();
+        ob_start();
+    }
+
     /**
      * Function the intantiate a new connection (if there isn't one) to the database
      * @return Connection - the instantiated connection

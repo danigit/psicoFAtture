@@ -6,10 +6,12 @@
  * Time: 19.30
  */
 
-require_once 'communication.php';
+require_once 'is_not_logged.php';
 require_once 'helper.php';
 
-class login extends communication {
+header('Access-Control-Allow-Origin: http://localhost:3000');
+
+class login extends is_not_logged {
     private $email, $password, $result;
 
     protected function input_elaboration(){
@@ -29,6 +31,8 @@ class login extends communication {
         if (is_error($this->result)) {
             $this->json_error("C'e stato un errore in fase di login", $this->result->getErrorName());
         }
+
+        set_session_variables($this->result, 'dani', true );
     }
 
     protected function return_data(){
