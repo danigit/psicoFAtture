@@ -25,6 +25,10 @@ class insert_invoice extends communication {
         $this->result = $connection->insert_invoice(json_decode($this->patient, true));
 
         if (is_error($this->result)) {
+            var_dump('errore nel insert');
+            if ($this->result->getErrorName() == 'ERROR_ON_INSERTING_INVOICE_DUPLICATE')
+                $this->json_error('duplicate invoice');
+
             $this->json_error("C'e stato un errore nel inserire la fattura", $this->result->getErrorName());
         }
     }

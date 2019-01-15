@@ -17,6 +17,7 @@ class db_errors
     public static $ERROR_ON_UPDATING_PATIENT = 6;
     public static $ERROR_ON_DELETING_PATIENT = 7;
     public static $ERROR_ON_INSERTING_INVOICE = 8;
+    public static $ERROR_ON_INSERTING_INVOICE_DUPLICATE = 9;
 
     private $error;
 
@@ -63,6 +64,8 @@ class db_errors
                 return 'ERROR_ON_DELETING_PATIENT';
             case 8:
                 return 'ERROR_ON_INSERTING_INVOICE';
+            case 9:
+                return 'ERROR_ON_INSERTING_INVOICE_DUPLICATE';
             default:
                 return 'UNKNOWN_ERROR';
         }

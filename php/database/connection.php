@@ -95,7 +95,7 @@ class Connection{
      * @return array|db_errors|mysqli_result
      */
     function get_last_invoices(){
-        $this->query = 'SELECT invoice.id, p.id AS patientId, invoice.description, name, surname, date FROM invoice JOIN patient p 
+        $this->query = 'SELECT invoice.invoice_number, p.id AS patientId, invoice.description, name, surname, date FROM invoice JOIN patient p 
                         ON invoice.patient = p.id ORDER BY date DESC ';
 
         $this->result = $this->connection->query($this->query);
@@ -106,7 +106,7 @@ class Connection{
         $return_result = array();
 
         while ($row = mysqli_fetch_assoc($this->result)){
-            $return_result[] = array('number' => $row['id'], 'patientId' => $row['patientId'], 'description' => $row['description'], 'name' => $row['name'], 'surname' => $row['surname'], 'date' => $row['date']);
+            $return_result[] = array('number' => $row['invoice_number'], 'patientId' => $row['patientId'], 'description' => $row['description'], 'name' => $row['name'], 'surname' => $row['surname'], 'date' => $row['date']);
         }
 
         return $return_result;
@@ -127,7 +127,7 @@ class Connection{
         $return_result = array();
 
         while ($row = mysqli_fetch_assoc($this->result)){
-            $return_result[] = array('number' => $row['id'], 'name' => $row['name'], 'surname' => $row['surname'],
+            $return_result[] = array('number' => $row['id'], 'name' => $row['name'], 'surname' => $row['surname'], 'email' => $row['email'],
                 'street' => $row['street'], 'fiscal_code' => $row['fiscal_code'], 'p_iva' => $row['p_iva']);
         }
 
@@ -140,9 +140,9 @@ class Connection{
      * @return db_errors|mixed
      */
     function insert_patient($patient){
-        $this->query = 'INSERT INTO patient (name, surname, street, fiscal_code, p_iva) VALUES (?, ?, ?, ?, ?)';
-        $this->result = $this->execute_inserting($this->query, "sssss", $patient['name'], $patient['surname'], $patient['street'],
-                                                    $patient['fiscal_code'], $patient['p_iva']);
+        $this->query = 'INSERT INTO patient (name, surname, email, street, fiscal_code, p_iva) VALUES (?, ?, ?, ?, ?, ?)';
+        $this->result = $this->execute_inserting($this->query, "ssssss", $patient['name'], $patient['surname'], $patient['email'],
+            $patient['street'], $patient['fiscal_code'], $patient['p_iva']);
 
         if ($this->result instanceof db_errors) {
             return $this->result;
@@ -180,8 +180,10 @@ class Connection{
      */
     function remove_patient($id){
         $this->query = "DELETE FROM patient WHERE id = ?";
+
         $this->result = $this->execute_selecting($this->query, "i", $id);
 
+        var_dump($id);
         if ($this->result instanceof db_errors)
             return $this->result;
 
@@ -193,7 +195,7 @@ class Connection{
      * @return array|db_errors
      */
     function get_invoice_number(){
-        $this->query = 'SELECT id FROM invoice ORDER BY id DESC  LIMIT  1';
+        $this->query = 'SELECT invoice_number FROM invoice ORDER BY invoice_number DESC  LIMIT  1';
 
         $this->result = $this->connection->query($this->query);
 
@@ -203,7 +205,7 @@ class Connection{
         $return_result = array();
 
         while ($row = mysqli_fetch_assoc($this->result)){
-            $return_result = $row['id'];
+            $return_result = $row['invoice_number'];
         }
 
         return $return_result;
@@ -215,9 +217,9 @@ class Connection{
      * @return db_errors|mixed
      */
     function insert_invoice($patient){
-        $this->query = 'INSERT INTO invoice (description, date, patient) VALUES (?, ?, ?)';
+        $this->query = 'INSERT INTO invoice (invoice_number, description, date, patient) VALUES (?, ?, ?, ?)';
 
-        $this->result = $this->execute_inserting($this->query, "sss", $patient['description'], $patient['date'], $patient['patientId']);
+        $this->result = $this->execute_inserting($this->query, "ssss", $patient['number'], $patient['description'], $patient['date'], $patient['patientId']);
 
         if ($this->result instanceof db_errors) {
             return $this->result;
@@ -249,8 +251,9 @@ class Connection{
 
         try{
             $result = $statement->execute();
-            if ($result == false)
-                return parse_errors($statement->error_list[0]);
+            if ($result == false){
+                return $this->parse_errors($statement->error_list[0]);
+            }
         }catch (Exception $e){
             return new db_errors(db_errors::$ERROR_ON_EXECUTE);
         }
@@ -286,4 +289,38 @@ class Connection{
 
         return $statement;
     }
+
+
+    /**
+     * Function that parse a string and returns and returns the error retrieved from the string
+     * @param $error_string - the string from witch extract the error
+     * @return mixed - the error retrieved from the parsed string
+     */
+    function parse_string($error_string){
+        $split_error = explode(' ', $error_string);
+
+        return str_replace("'", "", end($split_error));
+    }
+
+    /**
+     * Functions that parse an error array and return the appropriate error object
+     * @param $errors - the array containing the errors
+     * @return db_errors - the parsed error
+     */
+    function parse_errors($errors){
+        $errno = $errors['errno'];
+        if ($errno === 1062){
+            $column = $this->parse_string($errors['error']);
+            if ($column === "email") {
+                return new db_errors(db_errors::$ERROR_ON_EMAIL_DUPLICATE_ENTRY);
+            }else if ($column == "invoice_number") {
+                return new db_errors(db_errors::$ERROR_ON_INSERTING_INVOICE_DUPLICATE);
+            }
+        }
+
+        return new db_errors(db_errors::$ERROR_ON_EXECUTE);
+    }
 }
+//
+//$conn = new Connection();
+//var_dump($conn->insert_invoice(array('number' => "4", 'description' => 'antani', 'date' => '2015-2-2', 'patientId' => "1")));

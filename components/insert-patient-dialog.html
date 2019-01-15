@@ -6,7 +6,7 @@
                 <h2>Inserimento cliente</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="hide()">
-                    <img src="../img/close-icon.jpg" aria-label="Close dialog"/>
+                    <img src="../psicoFatture/img/close-icon.jpg" aria-label="Close dialog"/>
                 </md-button>
             </div>
         </md-toolbar>
@@ -29,6 +29,14 @@
                         <input required type="text" name="insertPatientSurname" ng-model="patient.surname" title="">
                         <div ng-messages="insertPatientForm.insertPatientSurname.$error" role="alert">
                             <div ng-message="required">Inserire il cognome</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Email</label>
+                        <input required type="text" name="insertPatientEmail" ng-model="patient.email"  ng-pattern="/^.+@.+\..+$/" title="">
+                        <div ng-messages="insertPatientForm.insertPatientEmail.$error" role="alert">
+                            <div ng-message="required">Inserire l'email</div>
+                            <div ng-message="pattern">Inserire una email valida</div>
                         </div>
                     </md-input-container>
                     <md-input-container>

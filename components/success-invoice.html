@@ -1,0 +1,25 @@
+<md-dialog aria-label="Inserimento cliente success">
+
+    <md-toolbar class="background-green">
+        <div class="md-toolbar-tools" id="success-title">
+            <h2>CREAZIONE FATTURA</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="hide()">
+                <img src="../psicoFatture/img/close-icon-green.jpg" aria-label="Close dialog"/>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="column">
+            <h3 id="success-content" class="success-dialog-content">Fattura creata correttamente</h3>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="color-green" ng-click="hide(); reload()">
+            CHIUDI
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

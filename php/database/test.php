@@ -34,10 +34,12 @@ class Test{
                 break;
             case 'allPatients': var_dump($this->conn->get_patients());
                 break;
+            case 'insertPatient': var_dump($this->conn->insert_invoice(array('number' => "4", 'description' => 'antani', 'date' => '2015-2-2', 'patientId' => "1")));
+                break;
             default: var_dump('Funzione non esistente');
         }
     }
 }
 
 $test = new Test();
-$test->test_function('allPatients');
+$test->test_function('insertPatient');

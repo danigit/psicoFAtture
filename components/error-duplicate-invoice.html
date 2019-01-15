@@ -1,0 +1,26 @@
+<md-dialog ng-controller="DialogController" aria-label="Inserimento cliente error">
+
+    <md-toolbar class="background-red">
+        <div class="md-toolbar-tools">
+            <h2>CREAZIONE FATTURA</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="hide()">
+                <img src="../psicoFatture/img/close-icon-red.jpg" aria-label="Close dialog"/>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="column">
+            <h3 class="success-dialog-content">Non e' stato possibile creare la fattura!</h3>
+            <h3 class="success-dialog-content">Una fattura con questo progressivo esiste gia.</h3>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="color-red" ng-click="hide()">
+            CHIUDI
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

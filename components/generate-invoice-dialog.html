@@ -6,7 +6,7 @@
                 <h2>Generazione Fattura</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="hide()">
-                    <img src="../img/close-icon.jpg" aria-label="Close dialog"/>
+                    <img src="../psicoFatture/img/close-icon.jpg" aria-label="Close dialog"/>
                 </md-button>
             </div>
         </md-toolbar>
@@ -46,6 +46,14 @@
                             </div>
                         </md-input-container>
                         <md-input-container>
+                            <label>Email</label>
+                            <input required type="text" name="generateInvoiceEmail" ng-model="patient.email"  ng-pattern="/^.+@.+\..+$/" title="">
+                            <div ng-messages="generateInvoiceForm.generateInvoiceEmail.$error" role="alert">
+                                <div ng-message="required">Inserire l'email</div>
+                                <div ng-message="pattern">Inserire una email valida</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
                             <label>Indirizzo</label>
                             <input required type="text" name="generateInvoiceStreet" ng-model="patient.street.split('-')[0]" title="">
                             <div ng-messages="generateInvoiceForm.generateInvoiceStreet.$error" role="alert">
@@ -68,7 +76,7 @@
                         </md-input-container>
                         <md-input-container>
                             <label>Importo</label>
-                            <input required type="number" name="generateInvoiceSum" title="" value="60">
+                            <input required type="number" name="generateInvoiceSum" title="" ng-model="patient.sum">
                             <div ng-messages="generateInvoiceForm.generateInvoiceSum.$error" role="alert">
                                 <div ng-message="required">Inserire l'importo della fattura</div>
                             </div>
@@ -92,7 +100,7 @@
                 ANULLA
             </md-button>
             <md-button class="md-accent" ng-click="generateInvoice(generateInvoiceForm)">
-                GENERA FATTURA
+                INVIA E SCARICA
             </md-button>
         </md-dialog-actions>
     </form>

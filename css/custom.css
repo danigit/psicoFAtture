@@ -23,6 +23,10 @@ FONTS
     font-family: Philosopher, serif;
 }
 
+.open-sans-font{
+    font-family: 'Open Sans', serif;
+}
+
 .text-left{
     text-align: left;
 }

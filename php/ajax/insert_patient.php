@@ -18,6 +18,7 @@ class insert_patient extends communication {
         $this->patient = $this->validate_string('patient');
         if ($this->patient == false)
             $this->json_error('Nessun paziente ricevuto');
+
     }
 
     protected function retrieve_data(){
